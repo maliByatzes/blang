@@ -29,6 +29,9 @@ public:
   Scanner() = default;
   explicit Scanner(std::string source) : m_source(std::move(source)) {}
 
+  std::vector<TokenType> scan_tokens() const;
+  TokenType scan_token() const;
+
 private:
   std::string m_source;
   std::size_t m_position{ 0 };
