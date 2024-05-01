@@ -12,13 +12,13 @@ namespace blang {
 class ScannerTest : public testing::Test
 {
 protected:
-  Scanner sc1{ ":" };
-  Scanner sc2{ ";" };
+  Scanner sc1{ ":;" };
+  // Scanner sc2{ ";" };
 };
 
-TEST_F(ScannerTest, TestColonToken)
+TEST_F(ScannerTest, TestSingleToken)
 {
-  std::vector<Token> exp_sc1_tks{ Token{ TokenType::t_colon, 1 } };
+  std::vector<Token> exp_sc1_tks{ Token{ TokenType::t_colon, 1 }, Token{ TokenType::t_semicolon, 2 } };
   std::vector<Token> sc1_tks{ sc1.scan_tokens() };
 
   ASSERT_EQ(sc1_tks.size(), exp_sc1_tks.size());
@@ -29,6 +29,7 @@ TEST_F(ScannerTest, TestColonToken)
   EXPECT_TRUE(are_eq);
 }
 
+/*
 TEST_F(ScannerTest, TestSemiColonToken)
 {
   std::vector<Token> exp_sc2_tks{ Token{ TokenType::t_semicolon, 1 } };
@@ -40,7 +41,7 @@ TEST_F(ScannerTest, TestSemiColonToken)
 
   bool are_eq = std::equal(sc2_tks.begin(), sc2_tks.end(), exp_sc2_tks.begin(), compare);
   EXPECT_TRUE(are_eq);
-}
+} */
 
 }// namespace blang
 
