@@ -11,6 +11,7 @@ set(exe_sources
 set(headers
     include/blang/tmp.hpp
     include/blang/scanner.hpp
+    include/blang/token_type.hpp
 )
 
 set(test_sources
