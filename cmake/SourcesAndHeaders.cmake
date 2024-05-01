@@ -15,5 +15,5 @@ set(headers
 )
 
 set(test_sources
-  src/tmp_test.cpp
+  src/scanner_test.cpp
 )
