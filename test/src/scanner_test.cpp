@@ -19,14 +19,16 @@ protected:
 
 TEST_F(ScannerTest, TestSingleTokens)
 {
-  std::vector<Token> exp_sc1_tks{ Token{ TokenType::t_colon, 0 } };
+  std::vector<Token> exp_sc1_tks{ Token{ TokenType::t_colon, 1 } };
   std::vector<Token> sc1_tks{ sc1.scan_tokens() };
 
   ASSERT_EQ(sc1_tks.size(), exp_sc1_tks.size());
 
-  bool are_eq = std::equal(sc1_tks.begin(), sc1_tks.end(), exp_sc1_tks.begin(), [](auto const &tk1, auto const &tk2) {
+  auto compare = [](auto const &tk1, auto const &tk2) {
     return tk1.type == tk2.type && tk1.position == tk2.position;
-  });
+  };
+
+  bool are_eq = std::equal(sc1_tks.begin(), sc1_tks.end(), exp_sc1_tks.begin(), compare);
   EXPECT_TRUE(are_eq);
 }
 
