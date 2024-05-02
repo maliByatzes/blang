@@ -1,6 +1,6 @@
 set(sources
-    src/tmp.cpp
     src/scanner.cpp
+    src/error/error_reporter.cpp
 )
 
 set(exe_sources
@@ -9,9 +9,9 @@ set(exe_sources
 )
 
 set(headers
-    include/blang/tmp.hpp
     include/blang/scanner.hpp
     include/blang/token_type.hpp
+    include/blang/error/error_reporter.hpp
 )
 
 set(test_sources

@@ -1,6 +1,7 @@
 #ifndef BLANG_SCANNER_HPP
 #define BLANG_SCANNER_HPP
 
+#include "blang/error/error_reporter.hpp"
 #include "blang/token_type.hpp"
 #include <cstddef>
 #include <string>
@@ -24,7 +25,7 @@ class Scanner
 {
 public:
   Scanner() = default;
-  explicit Scanner(std::string source) : m_source(std::move(source)) {}
+  Scanner(std::string source, error::ErrorReporter reporter) : m_source(std::move(source)), m_reporter(std::move(reporter)) {}
 
   std::vector<Token> scan_tokens();
   void add_token(TokenType type);
@@ -34,6 +35,7 @@ private:
   std::string m_source;
   std::size_t m_position{ 0 };
   std::vector<Token> m_tokens;
+  error::ErrorReporter m_reporter;
 };
 
 }// namespace blang

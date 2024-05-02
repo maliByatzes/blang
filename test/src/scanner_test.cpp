@@ -1,3 +1,4 @@
+#include "blang/error/error_reporter.hpp"
 #include "blang/scanner.hpp"
 #include "blang/token_type.hpp"
 
@@ -12,7 +13,8 @@ namespace blang {
 class ScannerTest : public testing::Test
 {
 protected:
-  Scanner sc1{ ":;" };
+  error::ErrorReporter reporter;
+  Scanner sc1{ ":;", reporter };
 };
 
 TEST_F(ScannerTest, TestSingleToken)
@@ -25,7 +27,8 @@ TEST_F(ScannerTest, TestSingleToken)
   auto compare = [](auto const &tk1, auto const &tk2) { return tk1.type == tk2.type && tk1.position == tk2.position; };
 
   bool are_eq = std::equal(sc1_tks.begin(), sc1_tks.end(), exp_sc1_tks.begin(), compare);
-  EXPECT_TRUE(are_eq);
+  ASSERT_TRUE(are_eq);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
 }// namespace blang

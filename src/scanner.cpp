@@ -1,28 +1,10 @@
 #include "blang/scanner.hpp"
 #include "blang/token_type.hpp"
-#include <algorithm>
-#include <iostream>
 
 namespace blang {
 
 std::vector<Token> Scanner::scan_tokens()
 {
-  /*
-  auto iter = std::find_if_not(m_source.begin(), m_source.end(), [this](char curr) {
-    switch (curr) {
-    case ':':
-      add_token(TokenType::t_colon);
-      return false;
-    case ';':
-      add_token(TokenType::t_semicolon);
-      return false;
-    default:
-      return true;
-    }
-  });
-
-  if (iter != m_source.end()) {}
-*/
 
 #pragma unroll 1
   while (m_position < m_source.size()) {
@@ -36,8 +18,11 @@ std::vector<Token> Scanner::scan_tokens()
     case ';':
       add_token(TokenType::t_semicolon);
       break;
+    case '=':
+      add_token(TokenType::t_equal);
     default:
-      std::cerr << "Token not identified!\n";
+      std::string message{ "Unexpected character: " + std::to_string(current_char) };
+      m_reporter.set_error(m_position, message);
     }
   }
 
