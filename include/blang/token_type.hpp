@@ -39,7 +39,7 @@ enum class TokenType {
   t_minus_minus,
   t_minus,
   t_bang,
-  t_exp,
+  t_exponent,
   t_star,
   t_slash,
   t_modulo,

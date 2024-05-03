@@ -28,10 +28,13 @@ public:
   Scanner(std::string source, error::ErrorReporter reporter) : m_source(std::move(source)), m_reporter(std::move(reporter)) {}
 
   std::vector<Token> scan_tokens();
-  void add_token(TokenType type);
-  char consume();
 
 private:
+  void add_token(TokenType type);
+  char consume();
+  [[nodiscard]] char peek_next() const;
+  void consume_next(char next, TokenType dbl, TokenType single);
+
   std::string m_source;
   std::size_t m_position{ 0 };
   std::vector<Token> m_tokens;
