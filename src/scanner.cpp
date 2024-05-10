@@ -1,5 +1,7 @@
 #include "blang/scanner.hpp"
 #include "blang/token_type.hpp"
+#include <cctype>
+#include <locale>
 
 namespace blang {
 
@@ -9,9 +11,8 @@ std::vector<Token> Scanner::scan_tokens()
 #pragma unroll 1
   while (m_position < m_source.size()) {
     char current_char{ consume() };
-    // switch-case on current_char and identify tokens
+
     switch (current_char) {
-    // process all the one character tokens
     case ':':
       add_token(TokenType::t_colon);
       break;
@@ -83,25 +84,41 @@ std::vector<Token> Scanner::scan_tokens()
       break;
     case ' ':
       break;
+    case '\n':
+      m_line++;
+      break;
     default:
+
+
+      if (valid_identifier_start_char(current_char)) {
+        // initialize a temp buffer
+        std::string buffer{};
+        buffer.push_back(current_char);
+
+        while (valid_identifier_char(peek_next())) {
+          char next_char = consume();
+          buffer.push_back(next_char);
+        }
+
+        if (peek_next() != ' ') {
+          std::string message{ "Unexpected character after identifier: " + std::to_string(peek_next()) };
+          m_reporter.set_error(m_position, message);
+        }
+      }
+
       std::string message{ "Unexpected character: " + std::to_string(current_char) };
       m_reporter.set_error(m_position, message);
     }
   }
 
-  m_tokens.push_back(Token{ TokenType::t_eof, m_position + 1 });
+  m_tokens.push_back(Token{ TokenType::t_eof, m_position + 1, m_line });
 
   return m_tokens;
 }
 
-char Scanner::consume()
-{
-  char r_char{ m_source.at(m_position) };
-  m_position++;
-  return r_char;
-}
+char Scanner::consume() { return m_source.at(m_position++); }
 
-void Scanner::add_token(TokenType type) { m_tokens.push_back(Token{ type, m_position }); }
+void Scanner::add_token(TokenType type) { m_tokens.push_back(Token{ type, m_position, m_line }); }
 
 char Scanner::peek_next() const { return m_source.at(m_position); }
 
@@ -113,6 +130,17 @@ void Scanner::consume_next(char next, TokenType dbl, TokenType single)
   } else {
     add_token(single);
   }
+}
+
+bool Scanner::valid_identifier_start_char(char chh)
+{
+  std::locale c_loc("C");
+  return std::isalpha(chh, c_loc) || chh == '_';
+}
+
+bool Scanner::valid_identifier_char(char chh)
+{
+  return valid_identifier_start_char(chh) || static_cast<bool>(std::isdigit(chh));
 }
 
 }// namespace blang
