@@ -89,25 +89,22 @@ std::vector<Token> Scanner::scan_tokens()
       break;
     default:
 
-
       if (valid_identifier_start_char(current_char)) {
         // initialize a temp buffer
         std::string buffer{};
         buffer.push_back(current_char);
 
+#pragma unroll 1
         while (valid_identifier_char(peek_next())) {
           char next_char = consume();
           buffer.push_back(next_char);
         }
 
-        if (peek_next() != ' ') {
-          std::string message{ "Unexpected character after identifier: " + std::to_string(peek_next()) };
-          m_reporter.set_error(m_position, message);
-        }
+        add_token(TokenType::t_identifier);
+      } else {
+        std::string message{ "Unexpected character: " + std::to_string(current_char) };
+        m_reporter.set_error(m_position, message);
       }
-
-      std::string message{ "Unexpected character: " + std::to_string(current_char) };
-      m_reporter.set_error(m_position, message);
     }
   }
 
