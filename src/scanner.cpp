@@ -5,80 +5,82 @@
 
 namespace blang {
 
+using value_object = std::variant<int, std::string, char>;
+
 std::vector<Token> Scanner::scan_tokens()
 {
 
-  while (m_position < m_source.size()) {
+  while (m_position < m_source.size()) {// unsure abt this condition, check later
     char current_char{ consume() };
 
     switch (current_char) {
     case ':':
-      add_token(TokenType::t_colon);
+      add_token(TokenType::t_colon, ':');
       break;
     case ';':
-      add_token(TokenType::t_semicolon);
+      add_token(TokenType::t_semicolon, ';');
       break;
     case '=':
-      consume_next('=', TokenType::t_equal_equal, TokenType::t_equal);
+      consume_next('=', TokenType::t_equal_equal, "==", TokenType::t_equal, '=');
       break;
     case '[':
-      add_token(TokenType::t_left_square);
+      add_token(TokenType::t_left_square, '[');
       break;
     case ']':
-      add_token(TokenType::t_right_square);
+      add_token(TokenType::t_right_square, ']');
       break;
     case '{':
-      add_token(TokenType::t_left_brace);
+      add_token(TokenType::t_left_brace, '{');
       break;
     case '}':
-      add_token(TokenType::t_right_brace);
+      add_token(TokenType::t_right_brace, '}');
       break;
     case ',':
-      add_token(TokenType::t_comma);
+      add_token(TokenType::t_comma, ',');
       break;
     case '(':
-      add_token(TokenType::t_left_paren);
+      add_token(TokenType::t_left_paren, '(');
       break;
     case ')':
-      add_token(TokenType::t_right_paren);
+      add_token(TokenType::t_right_paren, ')');
       break;
     case '-':
-      consume_next('-', TokenType::t_minus_minus, TokenType::t_minus);
+      consume_next('-', TokenType::t_minus_minus, "--", TokenType::t_minus, '-');
       break;
     case '!':
-      consume_next('=', TokenType::t_bang_equal, TokenType::t_bang);
+      consume_next('=', TokenType::t_bang_equal, "!=", TokenType::t_bang, '!');
       break;
     case '^':
-      add_token(TokenType::t_exponent);
+      add_token(TokenType::t_exponent, '^');
       break;
     case '*':
-      add_token(TokenType::t_star);
+      add_token(TokenType::t_star, '*');
       break;
     case '/':
-      add_token(TokenType::t_slash);
+      add_token(TokenType::t_slash, '/');
       break;
     case '%':
-      add_token(TokenType::t_modulo);
+      add_token(TokenType::t_modulo, '%');
       break;
     case '+':
-      consume_next('+', TokenType::t_plus_plus, TokenType::t_plus);
+      consume_next('+', TokenType::t_plus_plus, "++", TokenType::t_plus, '+');
       break;
     case '<':
-      consume_next('=', TokenType::t_less_equal, TokenType::t_less_than);
+      consume_next('=', TokenType::t_less_equal, "<=", TokenType::t_less_than, '<');
       break;
     case '>':
-      consume_next('=', TokenType::t_greater_equal, TokenType::t_greater_than);
+      consume_next('=', TokenType::t_greater_equal, ">=", TokenType::t_greater_than, '>');
       break;
     case '&':
       if (peek_next().has_value() && peek_next().value() == '&') {
         consume();
-        add_token(TokenType::t_and_and);
+        add_token(TokenType::t_and_and, "&&");
       }
       break;
     case '|':
       if (peek_next().has_value() && peek_next().value() == '|') {
         consume();
-        add_token(TokenType::t_or_or);
+        add_token(TokenType::t_or_or, "||");
       }
       break;
     case ' ':
@@ -93,12 +95,12 @@ std::vector<Token> Scanner::scan_tokens()
         std::string buffer{};
         buffer.push_back(current_char);
 
-        while (peek_next().has_value() && valid_identifier_char(peek_next().value())) { // NOLINT
+        while (peek_next().has_value() && valid_identifier_char(peek_next().value())) {// NOLINT
           char next_char = consume();
           buffer.push_back(next_char);
         }
 
-        add_token(TokenType::t_identifier);
+        add_token(TokenType::t_identifier, buffer);
       } else {
         std::string message{ "Unexpected character: " + std::to_string(current_char) };
         m_reporter.set_error(m_position, message);
@@ -106,14 +108,17 @@ std::vector<Token> Scanner::scan_tokens()
     }
   }
 
-  m_tokens.push_back(Token{ TokenType::t_eof, m_position + 1, m_line });
+  m_tokens.push_back(Token{ TokenType::t_eof, m_position + 1, m_line, '\0' });
 
   return m_tokens;
 }
 
 char Scanner::consume() { return m_source.at(m_position++); }
 
-void Scanner::add_token(TokenType type) { m_tokens.push_back(Token{ type, m_position, m_line }); }
+void Scanner::add_token(TokenType type, const value_object &value)
+{
+  m_tokens.push_back(Token{ type, m_position, m_line, value });
+}
 
 std::optional<char> Scanner::peek_next() const
 {
@@ -121,13 +126,17 @@ std::optional<char> Scanner::peek_next() const
   return m_source.at(m_position);
 }
 
-void Scanner::consume_next(char next, TokenType dbl, TokenType single)
+void Scanner::consume_next(char next,
+  TokenType dbl,
+  const value_object &val_dbl,
+  TokenType single,
+  const value_object &val_single)
 {
   if (peek_next().has_value() && peek_next().value() == next) {
     consume();
-    add_token(dbl);
+    add_token(dbl, val_dbl);
   } else {
-    add_token(single);
+    add_token(single, val_single);
   }
 }
 
