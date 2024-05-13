@@ -14,6 +14,12 @@ class ScannerTest : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
+
+  // Longer source strings
+  Scanner sc_all_single{ ":;[]{},()^*/%=-!+<>", reporter };
+  Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
+  Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
+
   // Single-character tokens
   Scanner sc1{ ":", reporter };
   Scanner sc2{ ";", reporter };
@@ -57,6 +63,36 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
     return tk1.type == tk2.type && tk1.position == tk2.position && tk1.line == tk2.line;
   };
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
+}
+
+TEST_F(ScannerTest, TestAllSingleTokens) {
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_colon, 1, 1 },
+    Token{ TokenType::t_semicolon, 2, 1 },
+    Token{ TokenType::t_left_square, 3, 1 },
+    Token{ TokenType::t_right_square, 4, 1 },
+    Token{ TokenType::t_left_brace, 5, 1 },
+    Token{ TokenType::t_right_brace, 6, 1 },
+    Token{ TokenType::t_comma, 7, 1 },
+    Token{ TokenType::t_left_paren, 8, 1 },
+    Token{ TokenType::t_right_paren, 9, 1 },
+    Token{ TokenType::t_exponent, 10, 1 },
+    Token{ TokenType::t_star, 11, 1 },
+    Token{ TokenType::t_slash, 12, 1 },
+    Token{ TokenType::t_modulo, 13, 1 },
+    Token{ TokenType::t_equal, 14, 1 },
+    Token{ TokenType::t_minus, 15, 1 },
+    Token{ TokenType::t_bang, 16, 1 },
+    Token{ TokenType::t_plus, 17, 1 },
+    Token{ TokenType::t_less_than, 18, 1 },
+    Token{ TokenType::t_greater_than, 19, 1 },
+    Token{ TokenType::t_eof, 20, 1 },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_all_single);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest, TestColonToken)
@@ -189,7 +225,6 @@ TEST_F(ScannerTest, TestModuloToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-/*
 TEST_F(ScannerTest, TestEqualToken)
 {
   std::vector<Token> expected_tokens{
@@ -250,7 +285,6 @@ TEST_F(ScannerTest, TestGreaterThanToken)
   run_scanner_test(expected_tokens, sc19);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
-*/
 
 TEST_F(ScannerTest, TestEqualEqualToken)
 {
@@ -262,12 +296,105 @@ TEST_F(ScannerTest, TestEqualEqualToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIdentifierToken) {
+TEST_F(ScannerTest, TestMinusMinusToken)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_minus_minus, 2, 1 },
+    Token{ TokenType::t_eof, 3, 1 },
+  };
+  run_scanner_test(expected_tokens, sc21);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestBangEqualToken)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_bang_equal, 2, 1 },
+    Token{ TokenType::t_eof, 3, 1 },
+  };
+  run_scanner_test(expected_tokens, sc22);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestLessEqualToken)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_less_equal, 2, 1 },
+    Token{ TokenType::t_eof, 3, 1 },
+  };
+  run_scanner_test(expected_tokens, sc23);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestGreaterEqualToken)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_greater_equal, 2, 1 },
+    Token{ TokenType::t_eof, 3, 1 },
+  };
+  run_scanner_test(expected_tokens, sc24);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestAndAndToken)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_and_and, 2, 1 },
+    Token{ TokenType::t_eof, 3, 1 },
+  };
+  run_scanner_test(expected_tokens, sc25);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestOrOrToken)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_or_or, 2, 1 },
+    Token{ TokenType::t_eof, 3, 1 },
+  };
+  run_scanner_test(expected_tokens, sc26);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestIdentifierToken1) {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_identifier, 1, 1},
     Token{ TokenType::t_eof, 2, 1 },
   };
-  run_scanner_test(expected_tokens, sc21);
+  run_scanner_test(expected_tokens, sc27);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestIdentifierToken2) {
+  const size_t idef_pos = 5;
+  const size_t eof_pos = 6;
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, idef_pos, 1},
+    Token{ TokenType::t_eof, eof_pos, 1 },
+  };
+  run_scanner_test(expected_tokens, sc28);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestIdentifierToken3) {
+  const size_t idef_pos = 6;
+  const size_t eof_pos = 7;
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, idef_pos, 1},
+    Token{ TokenType::t_eof, eof_pos, 1 },
+  };
+  run_scanner_test(expected_tokens, sc29);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestIdentifierToken4) {
+  const size_t idef_pos = 13;
+  const size_t eof_pos = 14;
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, idef_pos, 1},
+    Token{ TokenType::t_eof, eof_pos, 1 },
+  };
+  run_scanner_test(expected_tokens, sc30);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 

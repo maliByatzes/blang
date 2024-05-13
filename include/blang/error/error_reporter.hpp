@@ -2,8 +2,8 @@
 #define BLANG_ERROR_REPORTER_HPP
 
 #include <cstddef>
-#include <vector>
 #include <string>
+#include <vector>
 namespace blang::error {
 
 enum class Status { OK, ERROR };

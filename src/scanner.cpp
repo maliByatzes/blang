@@ -8,7 +8,6 @@ namespace blang {
 std::vector<Token> Scanner::scan_tokens()
 {
 
-#pragma unroll 1
   while (m_position < m_source.size()) {
     char current_char{ consume() };
 
@@ -71,13 +70,13 @@ std::vector<Token> Scanner::scan_tokens()
       consume_next('=', TokenType::t_greater_equal, TokenType::t_greater_than);
       break;
     case '&':
-      if (peek_next() == '&') {
+      if (peek_next().has_value() && peek_next().value() == '&') {
         consume();
         add_token(TokenType::t_and_and);
       }
       break;
     case '|':
-      if (peek_next() == '|') {
+      if (peek_next().has_value() && peek_next().value() == '|') {
         consume();
         add_token(TokenType::t_or_or);
       }
@@ -94,8 +93,7 @@ std::vector<Token> Scanner::scan_tokens()
         std::string buffer{};
         buffer.push_back(current_char);
 
-#pragma unroll 1
-        while (valid_identifier_char(peek_next())) {
+        while (peek_next().has_value() && valid_identifier_char(peek_next().value())) { // NOLINT
           char next_char = consume();
           buffer.push_back(next_char);
         }
@@ -117,11 +115,15 @@ char Scanner::consume() { return m_source.at(m_position++); }
 
 void Scanner::add_token(TokenType type) { m_tokens.push_back(Token{ type, m_position, m_line }); }
 
-char Scanner::peek_next() const { return m_source.at(m_position); }
+std::optional<char> Scanner::peek_next() const
+{
+  if (m_position >= m_source.size()) { return {}; }
+  return m_source.at(m_position);
+}
 
 void Scanner::consume_next(char next, TokenType dbl, TokenType single)
 {
-  if (peek_next() == next) {
+  if (peek_next().has_value() && peek_next().value() == next) {
     consume();
     add_token(dbl);
   } else {

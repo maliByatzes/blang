@@ -4,6 +4,7 @@
 #include "blang/error/error_reporter.hpp"
 #include "blang/token_type.hpp"
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -35,7 +36,7 @@ public:
 private:
   void add_token(TokenType type);
   char consume();
-  [[nodiscard]] char peek_next() const;
+  [[nodiscard]] std::optional<char> peek_next() const;
   void consume_next(char next, TokenType dbl, TokenType single);
   [[nodiscard]] static bool valid_identifier_start_char(char chh);
   [[nodiscard]] static bool valid_identifier_char(char chh);
