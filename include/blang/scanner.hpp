@@ -46,6 +46,10 @@ private:
     const value_object &val_dbl,
     TokenType single,
     const value_object &val_single);
+  void process_identifier(char curr_char);
+  void process_integer_lit(char curr_char);
+  void process_char_lit();
+  void process_string_lit();
   [[nodiscard]] static bool valid_identifier_start_char(char chh);
   [[nodiscard]] static bool valid_identifier_char(char chh);
 

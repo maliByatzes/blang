@@ -2,6 +2,7 @@
 #include "blang/token_type.hpp"
 #include <cctype>
 #include <locale>
+#include <string>
 
 namespace blang {
 
@@ -10,7 +11,7 @@ using value_object = std::variant<int, std::string, char>;
 std::vector<Token> Scanner::scan_tokens()
 {
 
-  while (m_position < m_source.size()) {// unsure abt this condition, check later
+  while (m_position < m_source.size()) {// NOLINT // unsure abt this condition, check later
     char current_char{ consume() };
 
     switch (current_char) {
@@ -83,6 +84,9 @@ std::vector<Token> Scanner::scan_tokens()
         add_token(TokenType::t_or_or, "||");
       }
       break;
+    case '\'':
+      process_char_lit();
+      break;
     case ' ':
       break;
     case '\n':
@@ -91,17 +95,12 @@ std::vector<Token> Scanner::scan_tokens()
     default:
 
       if (valid_identifier_start_char(current_char)) {
-        // initialize a temp buffer
-        std::string buffer{};
-        buffer.push_back(current_char);
+        process_identifier(current_char);
+      } else if (static_cast<bool>(std::isdigit(current_char))) {
+        process_integer_lit(current_char);
+      }
 
-        while (peek_next().has_value() && valid_identifier_char(peek_next().value())) {// NOLINT
-          char next_char = consume();
-          buffer.push_back(next_char);
-        }
-
-        add_token(TokenType::t_identifier, buffer);
-      } else {
+      else {
         std::string message{ "Unexpected character: " + std::to_string(current_char) };
         m_reporter.set_error(m_position, message);
       }
@@ -149,6 +148,66 @@ bool Scanner::valid_identifier_start_char(char chh)
 bool Scanner::valid_identifier_char(char chh)
 {
   return valid_identifier_start_char(chh) || static_cast<bool>(std::isdigit(chh));
+}
+
+void Scanner::process_identifier(char curr_char)
+{
+  std::string buffer{};
+  buffer.push_back(curr_char);
+
+  while (peek_next().has_value() && valid_identifier_char(peek_next().value())) {// NOLINT
+    char next_char = consume();
+    buffer.push_back(next_char);
+  }
+
+  add_token(TokenType::t_identifier, buffer);
+}
+
+void Scanner::process_integer_lit(char curr_char)
+{
+  std::string buffer{};
+  buffer.push_back(curr_char);
+
+  while (peek_next().has_value() && static_cast<bool>(std::isdigit(peek_next().value()))) {// NOLINT
+    char next_char = consume();
+    buffer.push_back(next_char);
+  }
+
+  int value = std::stoi(buffer);
+  add_token(TokenType::t_integer_lit, value);
+}
+
+void Scanner::process_char_lit()
+{
+  std::locale c_loc("C");
+  if (peek_next().has_value() && std::isalpha(peek_next().value(), c_loc)) {
+    char value = consume();
+    if (peek_next().has_value() && peek_next().value() == '\'') {
+      add_token(TokenType::t_char_lit, value);
+      consume();
+    } else {
+      std::string message{ "Unterminated character, missing \"'\"" };
+      m_reporter.set_error(m_position, message);
+    }
+  }
+}
+
+void Scanner::process_string_lit()
+{
+  std::locale c_loc("C");
+  if (peek_next().has_value()
+      && (std::isalpha(peek_next().value(), c_loc) || static_cast<bool>(std::isdigit(peek_next().value())))) {
+    char first_char = consume();
+    std::string buffer{};
+    buffer.push_back(first_char);
+
+    while ( // NOLINT
+      peek_next().has_value()
+      && (std::isalpha(peek_next().value(), c_loc) || static_cast<bool>(std::isdigit(peek_next().value())))) {
+      char next_char = consume();
+      buffer.push_back(next_char);
+    }
+  }
 }
 
 }// namespace blang
