@@ -20,6 +20,11 @@ protected:
   Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
 
+  // Test string literal processing
+  Scanner sc_hello{ "\"hello\"", reporter };
+  Scanner sc_hello_2{ "\"h5725gf45llo\"", reporter };
+  Scanner sc_hello_nl{ "\"he\nllo\"", reporter };
+
   // Single-character tokens
   Scanner sc1{ ":", reporter };
   Scanner sc2{ ";", reporter };
@@ -139,6 +144,45 @@ TEST_F(ScannerTest, TestMixtureTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_mixture);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestStringLitHelloToken)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_string_lit, 7, 1, "hello" },
+    Token{ TokenType::t_eof, 8, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_hello);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestStringLitHelloNumToken)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_string_lit, 14, 1, "h5725gf45llo" },
+    Token{ TokenType::t_eof, 15, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_hello_2);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestStringLitHelloNLToken)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_string_lit, 8, 2, "hello" },
+    Token{ TokenType::t_eof, 9, 2, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_hello_nl);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 

@@ -87,6 +87,9 @@ std::vector<Token> Scanner::scan_tokens()
     case '\'':
       process_char_lit();
       break;
+    case '"':
+      process_string_lit();
+      break;
     case ' ':
       break;
     case '\n':
@@ -194,20 +197,20 @@ void Scanner::process_char_lit()
 
 void Scanner::process_string_lit()
 {
-  std::locale c_loc("C");
-  if (peek_next().has_value()
-      && (std::isalpha(peek_next().value(), c_loc) || static_cast<bool>(std::isdigit(peek_next().value())))) {
-    char first_char = consume();
-    std::string buffer{};
-    buffer.push_back(first_char);
-
-    while ( // NOLINT
-      peek_next().has_value()
-      && (std::isalpha(peek_next().value(), c_loc) || static_cast<bool>(std::isdigit(peek_next().value())))) {
-      char next_char = consume();
+  std::string buffer{};
+  while (peek_next().has_value() && peek_next().value() != '"') {// NOLINT
+    // allow multi-line strings FOR NOW!!
+    // TODO: Disallow multi-line string literals
+    char next_char = consume();
+    if (next_char == '\n') {
+      m_line++;
+    } else {
       buffer.push_back(next_char);
     }
   }
+
+  consume();
+  add_token(TokenType::t_string_lit, buffer);
 }
 
 }// namespace blang
