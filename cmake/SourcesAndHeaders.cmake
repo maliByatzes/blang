@@ -15,5 +15,9 @@ set(headers
 )
 
 set(test_sources
-  src/scanner_test.cpp
+  src/scanner_test/double_character_test.cpp
+  src/scanner_test/identifier_test.cpp
+  src/scanner_test/longer_source_test.cpp
+  src/scanner_test/single_char_test.cpp
+  src/scanner_test/string_literal_test.cpp
 )
