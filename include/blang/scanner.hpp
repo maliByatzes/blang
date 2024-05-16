@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <optional>
 #include <string>
+#include <unordered_map>
 #include <variant>
 #include <vector>
 
@@ -24,6 +25,7 @@ struct alignas(TOKEN_ALIGNMENT) Token
   int line;
   value_object value;
 };
+
 
 // Scanner class which produces a vector of tokens one by one from a source
 // file or source input.
@@ -58,6 +60,23 @@ private:
   int m_line{ 1 };
   std::vector<Token> m_tokens;
   error::ErrorReporter m_reporter;
+  std::unordered_map<std::string, TokenType> m_keywords = {
+    { "array", TokenType::t_array },
+    { "boolean", TokenType::t_boolean },
+    { "char", TokenType::t_char },
+    { "else", TokenType::t_else },
+    { "false", TokenType::t_false },
+    { "for", TokenType::t_for },
+    { "function", TokenType::t_function },
+    { "if", TokenType::t_if },
+    { "integer", TokenType::t_integer },
+    { "print", TokenType::t_print },
+    { "return", TokenType::t_return },
+    { "string", TokenType::t_string },
+    { "true", TokenType::t_true },
+    { "void", TokenType::t_void },
+    { "while", TokenType::t_while },
+  };
 };
 
 }// namespace blang

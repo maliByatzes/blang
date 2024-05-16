@@ -18,6 +18,7 @@ protected:
   Scanner sc_all_single{ ":;[]{},()^*/%=-!+<>", reporter };
   Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
+  Scanner sc_identifier_kw{ "array arrayrt3d function if else falsefalse print voider", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -104,6 +105,26 @@ TEST_F(ScannerTest, TestMixtureTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_mixture);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestIdentifierKWTokens)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_array, 5, 1, "array" },
+    Token{ TokenType::t_identifier, 15, 1, "arrayrt3d" },
+    Token{ TokenType::t_function, 24, 1, "function" },
+    Token{ TokenType::t_if, 27, 1, "if" },
+    Token{ TokenType::t_else, 32, 1, "else" },
+    Token{ TokenType::t_identifier, 43, 1, "falsefalse" },
+    Token{ TokenType::t_print, 49, 1, "print" },
+    Token{ TokenType::t_identifier, 56, 1, "voider" },
+    Token{ TokenType::t_eof, 57, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_identifier_kw);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 

@@ -163,7 +163,14 @@ void Scanner::process_identifier(char curr_char)
     buffer.push_back(next_char);
   }
 
-  add_token(TokenType::t_identifier, buffer);
+  TokenType type = {};
+  if (auto search = m_keywords.find(buffer); search != m_keywords.end()) {
+    type = search->second;
+  } else {
+    type = TokenType::t_identifier;
+  }
+
+  add_token(type, buffer);
 }
 
 void Scanner::process_integer_lit(char curr_char)
