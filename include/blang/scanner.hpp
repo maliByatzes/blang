@@ -26,7 +26,6 @@ struct alignas(TOKEN_ALIGNMENT) Token
   value_object value;
 };
 
-
 // Scanner class which produces a vector of tokens one by one from a source
 // file or source input.
 class Scanner
