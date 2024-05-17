@@ -19,6 +19,7 @@ protected:
   Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
   Scanner sc_identifier_kw{ "array arrayrt3d function if else falsefalse print voider", reporter };
+  Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = ’q’;\ns: string = \"hello world\n\";", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -125,6 +126,38 @@ TEST_F(ScannerTest, TestIdentifierKWTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_identifier_kw);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest, TestDeclarations) {
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "x" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_integer, 10, 1, "integer" },
+    Token{ TokenType::t_semicolon, 11, 1, ';' },
+    Token{ TokenType::t_identifier, 13, 2, "b" },
+    Token{ TokenType::t_colon, 14, 2, ':' },
+    Token{ TokenType::t_boolean, 22, 2, "boolean" },
+    Token{ TokenType::t_equal, 24, 2, '=' },
+    Token{ TokenType::t_false, 30, 2, "false" },
+    Token{ TokenType::t_semicolon, 31, 2, ';' },
+    Token{ TokenType::t_identifier, 33, 3, "c" },
+    Token{ TokenType::t_colon, 34, 3, ':' },
+    Token{ TokenType::t_char, 39, 3, "char" },
+    Token{ TokenType::t_equal, 41, 3, '=' },
+    Token{ TokenType::t_char_lit, 44, 3, 'q' },
+    Token{ TokenType::t_semicolon, 46, 3, ';' },
+    Token{ TokenType::t_identifier, 48, 4, "s" },
+    Token{ TokenType::t_colon, 49, 4, ':' },
+    Token{ TokenType::t_string, 56, 4, "string" },
+    Token{ TokenType::t_equal, 58, 4, '=' },
+    Token{ TokenType::t_string_lit, 72, 4, "hello world\n" },
+    Token{ TokenType::t_semicolon, 74, 4, ';' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_declarations);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 

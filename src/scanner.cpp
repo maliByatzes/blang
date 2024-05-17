@@ -4,6 +4,9 @@
 #include <locale>
 #include <string>
 
+// TODO: implement comments
+// TODO: implement integr literals
+
 namespace blang {
 
 using value_object = std::variant<int, std::string, char>;
