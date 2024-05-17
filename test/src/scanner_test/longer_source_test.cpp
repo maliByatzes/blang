@@ -154,6 +154,7 @@ TEST_F(ScannerTest, TestDeclarations) {
     Token{ TokenType::t_equal, 58, 4, '=' },
     Token{ TokenType::t_string_lit, 72, 4, "hello world\n" },
     Token{ TokenType::t_semicolon, 74, 4, ';' },
+    Token{ TokenType::t_eof, 75, 4, '\0' },
   };
   // NOLINTEND
 
