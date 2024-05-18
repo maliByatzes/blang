@@ -4,9 +4,6 @@
 #include <locale>
 #include <string>
 
-// TODO: implement comments
-// TODO: implement integr literals
-
 namespace blang {
 
 using value_object = std::variant<int, std::string, char>;
@@ -61,7 +58,7 @@ std::vector<Token> Scanner::scan_tokens()
       add_token(TokenType::t_star, '*');
       break;
     case '/':
-      add_token(TokenType::t_slash, '/');
+      process_comments();
       break;
     case '%':
       add_token(TokenType::t_modulo, '%');
@@ -104,9 +101,7 @@ std::vector<Token> Scanner::scan_tokens()
         process_identifier(current_char);
       } else if (static_cast<bool>(std::isdigit(current_char))) {
         process_integer_lit(current_char);
-      }
-
-      else {
+      } else {
         std::string message{ "Unexpected character: " + std::to_string(current_char) };
         m_reporter.set_error(m_position, message);
       }
@@ -192,6 +187,8 @@ void Scanner::process_integer_lit(char curr_char)
 
 void Scanner::process_char_lit()
 {
+  // TODO: process more chars other than letters only...:)
+  // just a stupid initial implementation, didn;t realize
   std::locale c_loc("C");
   if (peek_next().has_value() && std::isalpha(peek_next().value(), c_loc)) {
     char value = consume();
@@ -221,6 +218,32 @@ void Scanner::process_string_lit()
 
   consume();
   add_token(TokenType::t_string_lit, buffer);
+}
+
+void Scanner::process_comments()
+{
+  if (peek_next().has_value() && peek_next().value() == '*') {
+    consume();
+    while (peek_next().has_value()) {// NOLINT
+      if (peek_next().value() == '*') {
+        consume();
+        if (peek_next().has_value() && peek_next().value() == '/') {
+          consume();
+          break;
+        }
+        continue;
+      }
+    }
+  } else if (peek_next().has_value() && peek_next().value() == '/') {
+    consume();
+    while (peek_next().has_value() && peek_next().value() != '\n') {//NOLINT
+      consume();
+    }
+    consume();
+    m_line++;
+  } else {
+    add_token(TokenType::t_slash, '/');
+  }
 }
 
 }// namespace blang

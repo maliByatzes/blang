@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest : public testing::Test
+class ScannerTest6 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -42,7 +42,7 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest, TestArrayToken)
+TEST_F(ScannerTest6, TestArrayToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_array, 5, 1, "array" },// NOLINT
@@ -52,7 +52,7 @@ TEST_F(ScannerTest, TestArrayToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestBooleanToken)
+TEST_F(ScannerTest6, TestBooleanToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_boolean, 7, 1, "boolean" },// NOLINT
@@ -62,7 +62,7 @@ TEST_F(ScannerTest, TestBooleanToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestCharToken)
+TEST_F(ScannerTest6, TestCharToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_char, 4, 1, "char" },// NOLINT
@@ -72,7 +72,7 @@ TEST_F(ScannerTest, TestCharToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestElseToken)
+TEST_F(ScannerTest6, TestElseToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_else, 4, 1, "else" },// NOLINT
@@ -82,7 +82,7 @@ TEST_F(ScannerTest, TestElseToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestFalseToken)
+TEST_F(ScannerTest6, TestFalseToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_false, 5, 1, "false" },// NOLINT
@@ -92,7 +92,7 @@ TEST_F(ScannerTest, TestFalseToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestForToken)
+TEST_F(ScannerTest6, TestForToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_for, 3, 1, "for" },// NOLINT
@@ -102,7 +102,7 @@ TEST_F(ScannerTest, TestForToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestFunctionToken)
+TEST_F(ScannerTest6, TestFunctionToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_function, 8, 1, "function" },// NOLINT
@@ -112,7 +112,7 @@ TEST_F(ScannerTest, TestFunctionToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIfToken)
+TEST_F(ScannerTest6, TestIfToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_if, 2, 1, "if" },// NOLINT
@@ -122,7 +122,7 @@ TEST_F(ScannerTest, TestIfToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIntegerToken)
+TEST_F(ScannerTest6, TestIntegerToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_integer, 7, 1, "integer" },// NOLINT
@@ -132,7 +132,7 @@ TEST_F(ScannerTest, TestIntegerToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestPrintToken)
+TEST_F(ScannerTest6, TestPrintToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_print, 5, 1, "print" },// NOLINT
@@ -142,7 +142,7 @@ TEST_F(ScannerTest, TestPrintToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestReturnToken)
+TEST_F(ScannerTest6, TestReturnToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_return, 6, 1, "return" },// NOLINT
@@ -152,7 +152,7 @@ TEST_F(ScannerTest, TestReturnToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestStringToken)
+TEST_F(ScannerTest6, TestStringToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_string, 6, 1, "string" },// NOLINT
@@ -162,7 +162,7 @@ TEST_F(ScannerTest, TestStringToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestTrueToken)
+TEST_F(ScannerTest6, TestTrueToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_true, 4, 1, "true" },// NOLINT
@@ -172,7 +172,7 @@ TEST_F(ScannerTest, TestTrueToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestVoidToken)
+TEST_F(ScannerTest6, TestVoidToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_void, 4, 1, "void" },// NOLINT
@@ -182,7 +182,7 @@ TEST_F(ScannerTest, TestVoidToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestWhileToken)
+TEST_F(ScannerTest6, TestWhileToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_while, 5, 1, "while" },// NOLINT

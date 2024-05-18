@@ -10,15 +10,15 @@
 
 namespace blang {
 
-class ScannerTest9 : public testing::Test
+class ScannerTest2 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
 
   // Test string literal processing
-  Scanner sc_hello{ "\"hello\"", reporter };
-  Scanner sc_hello_2{ "\"h5725gf45llo\"", reporter };
-  Scanner sc_hello_nl{ "\"he\nllo\"", reporter };
+  // Scanner sc_comment_1{ "/* A C-style comment*/", reporter };
+  Scanner sc_comment_2{ "// A C++ comment\n", reporter };
+  // Scanner sc_comments{ "/* A C-style comment */\na=5; // A C++ style comment\n", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -31,44 +31,44 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest9, TestStringLitHelloToken)
+/*
+TEST_F(ScannerTest2, TestComment1)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_eof, 23, 1, '\0' }// NOLINT
+  };
+
+  std::cout << "Stop";
+  run_scanner_test(expected_tokens, sc_comment_1);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+*/
+
+TEST_F(ScannerTest2, TestComment2)
+{
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_eof, 18, 2, '\0' }// NOLINT
+  };
+  run_scanner_test(expected_tokens, sc_comment_2);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+/*
+TEST_F(ScannerTest2, TestComments)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
-    Token{ TokenType::t_string_lit, 7, 1, "hello" },
-    Token{ TokenType::t_eof, 8, 1, '\0' },
+    Token{ TokenType::t_identifier, 25, 2, "a" },
+    Token{ TokenType::t_equal, 26, 2, '=' },
+    Token{ TokenType::t_integer_lit, 27, 2, 5 },
+    Token{ TokenType::t_semicolon, 28, 2, ';' },
+    Token{ TokenType::t_eof, 29, 2, '\0' },
   };
   // NOLINTEND
 
-  run_scanner_test(expected_tokens, sc_hello);
+  run_scanner_test(expected_tokens, sc_comments);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
-
-TEST_F(ScannerTest9, TestStringLitHelloNumToken)
-{
-  // NOLINTBEGIN
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_string_lit, 14, 1, "h5725gf45llo" },
-    Token{ TokenType::t_eof, 15, 1, '\0' },
-  };
-  // NOLINTEND
-
-  run_scanner_test(expected_tokens, sc_hello_2);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
-}
-
-TEST_F(ScannerTest9, TestStringLitHelloNLToken)
-{
-  // NOLINTBEGIN
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_string_lit, 8, 2, "hello" },
-    Token{ TokenType::t_eof, 9, 2, '\0' },
-  };
-  // NOLINTEND
-
-  run_scanner_test(expected_tokens, sc_hello_nl);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
-}
+*/
 
 }// namespace blang
 

@@ -51,6 +51,7 @@ private:
   void process_integer_lit(char curr_char);
   void process_char_lit();
   void process_string_lit();
+  void process_comments();
   [[nodiscard]] static bool valid_identifier_start_char(char chh);
   [[nodiscard]] static bool valid_identifier_char(char chh);
 

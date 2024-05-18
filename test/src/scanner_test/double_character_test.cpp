@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest : public testing::Test
+class ScannerTest3 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -36,7 +36,7 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest, TestEqualEqualToken)
+TEST_F(ScannerTest3, TestEqualEqualToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_equal_equal, 2, 1, "==" },
@@ -46,7 +46,7 @@ TEST_F(ScannerTest, TestEqualEqualToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestMinusMinusToken)
+TEST_F(ScannerTest3, TestMinusMinusToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_minus_minus, 2, 1, "--" },
@@ -56,7 +56,7 @@ TEST_F(ScannerTest, TestMinusMinusToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestBangEqualToken)
+TEST_F(ScannerTest3, TestBangEqualToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_bang_equal, 2, 1, "!=" },
@@ -66,7 +66,7 @@ TEST_F(ScannerTest, TestBangEqualToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestLessEqualToken)
+TEST_F(ScannerTest3, TestLessEqualToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_less_equal, 2, 1, "<=" },
@@ -76,7 +76,7 @@ TEST_F(ScannerTest, TestLessEqualToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestGreaterEqualToken)
+TEST_F(ScannerTest3, TestGreaterEqualToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_greater_equal, 2, 1, ">=" },
@@ -86,7 +86,7 @@ TEST_F(ScannerTest, TestGreaterEqualToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestAndAndToken)
+TEST_F(ScannerTest3, TestAndAndToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_and_and, 2, 1, "&&" },
@@ -96,7 +96,7 @@ TEST_F(ScannerTest, TestAndAndToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestOrOrToken)
+TEST_F(ScannerTest3, TestOrOrToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_or_or, 2, 1, "||" },
@@ -106,7 +106,7 @@ TEST_F(ScannerTest, TestOrOrToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestPlusPlusToken)
+TEST_F(ScannerTest3, TestPlusPlusToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_plus_plus, 2, 1, "++" },

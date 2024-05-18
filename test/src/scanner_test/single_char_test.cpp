@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest : public testing::Test
+class ScannerTest8 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -47,7 +47,7 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest, TestColonToken)
+TEST_F(ScannerTest8, TestColonToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_colon, 1, 1, ':' },
@@ -57,7 +57,7 @@ TEST_F(ScannerTest, TestColonToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestSemicolonToken)
+TEST_F(ScannerTest8, TestSemicolonToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_semicolon, 1, 1, ';' },
@@ -67,7 +67,7 @@ TEST_F(ScannerTest, TestSemicolonToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestLeftSquareToken)
+TEST_F(ScannerTest8, TestLeftSquareToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_left_square, 1, 1, '[' },
@@ -77,7 +77,7 @@ TEST_F(ScannerTest, TestLeftSquareToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestRightSquareToken)
+TEST_F(ScannerTest8, TestRightSquareToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_right_square, 1, 1, ']' },
@@ -87,7 +87,7 @@ TEST_F(ScannerTest, TestRightSquareToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestLeftBraceToken)
+TEST_F(ScannerTest8, TestLeftBraceToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_left_brace, 1, 1, '{' },
@@ -97,7 +97,7 @@ TEST_F(ScannerTest, TestLeftBraceToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestRightBraceToken)
+TEST_F(ScannerTest8, TestRightBraceToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_right_brace, 1, 1, '}' },
@@ -107,7 +107,7 @@ TEST_F(ScannerTest, TestRightBraceToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestCommaToken)
+TEST_F(ScannerTest8, TestCommaToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_comma, 1, 1, ',' },
@@ -117,7 +117,7 @@ TEST_F(ScannerTest, TestCommaToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestLeftParenToken)
+TEST_F(ScannerTest8, TestLeftParenToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_left_paren, 1, 1, '(' },
@@ -127,7 +127,7 @@ TEST_F(ScannerTest, TestLeftParenToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestRightParenToken)
+TEST_F(ScannerTest8, TestRightParenToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_right_paren, 1, 1, ')' },
@@ -137,7 +137,7 @@ TEST_F(ScannerTest, TestRightParenToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestExponentToken)
+TEST_F(ScannerTest8, TestExponentToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_exponent, 1, 1, '^' },
@@ -147,7 +147,7 @@ TEST_F(ScannerTest, TestExponentToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestStarToken)
+TEST_F(ScannerTest8, TestStarToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_star, 1, 1, '*' },
@@ -157,7 +157,7 @@ TEST_F(ScannerTest, TestStarToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestSlashToken)
+TEST_F(ScannerTest8, TestSlashToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_slash, 1, 1, '/' },
@@ -167,7 +167,7 @@ TEST_F(ScannerTest, TestSlashToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestModuloToken)
+TEST_F(ScannerTest8, TestModuloToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_modulo, 1, 1, '%' },
@@ -177,7 +177,7 @@ TEST_F(ScannerTest, TestModuloToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestEqualToken)
+TEST_F(ScannerTest8, TestEqualToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_equal, 1, 1, '=' },
@@ -187,7 +187,7 @@ TEST_F(ScannerTest, TestEqualToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestMinusToken)
+TEST_F(ScannerTest8, TestMinusToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_minus, 1, 1, '-' },
@@ -197,7 +197,7 @@ TEST_F(ScannerTest, TestMinusToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestBangToken)
+TEST_F(ScannerTest8, TestBangToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_bang, 1, 1, '!' },
@@ -208,7 +208,7 @@ TEST_F(ScannerTest, TestBangToken)
 }
 
 
-TEST_F(ScannerTest, TestPlusToken)
+TEST_F(ScannerTest8, TestPlusToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_plus, 1, 1, '+' },
@@ -218,7 +218,7 @@ TEST_F(ScannerTest, TestPlusToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestLessThanToken)
+TEST_F(ScannerTest8, TestLessThanToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_less_than, 1, 1, '<' },
@@ -228,7 +228,7 @@ TEST_F(ScannerTest, TestLessThanToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestGreaterThanToken)
+TEST_F(ScannerTest8, TestGreaterThanToken)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_greater_than, 1, 1, '>' },
