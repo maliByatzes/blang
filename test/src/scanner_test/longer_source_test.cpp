@@ -20,6 +20,8 @@ protected:
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
   Scanner sc_identifier_kw{ "array arrayrt3d function if else falsefalse print voider", reporter };
   Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = 'q';\ns: string = \"hello world\n\";", reporter };
+  Scanner sc_array1{"a: array [5] integer;", reporter};
+  Scanner sc_array2{"a: array [5] integer = {1,2,3};", reporter};
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -162,6 +164,53 @@ TEST_F(ScannerTest7, TestIdentifierKWTokens)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
+TEST_F(ScannerTest7, TestArray1)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "a" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_array, 8, 1, "array" },
+    Token{ TokenType::t_left_square, 10, 1, '[' },
+    Token{ TokenType::t_integer_lit, 11, 1, 5 },
+    Token{ TokenType::t_right_square, 12, 1, ']' },
+    Token{ TokenType::t_integer, 20, 1, "integer" },
+    Token{ TokenType::t_semicolon, 21, 1, ';' },
+    Token{ TokenType::t_eof, 22, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_array1);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest7, TestArray2)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "a" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_array, 8, 1, "array" },
+    Token{ TokenType::t_left_square, 10, 1, '[' },
+    Token{ TokenType::t_integer_lit, 11, 1, 5 },
+    Token{ TokenType::t_right_square, 12, 1, ']' },
+    Token{ TokenType::t_integer, 20, 1, "integer" },
+    Token{ TokenType::t_equal, 22, 1, '=' },
+    Token{ TokenType::t_left_brace, 24, 1, '{' },
+    Token{ TokenType::t_integer_lit, 25, 1, 1 },
+    Token{ TokenType::t_comma, 26, 1, ',' },
+    Token{ TokenType::t_integer_lit, 27, 1, 2 },
+    Token{ TokenType::t_comma, 28, 1, ',' },
+    Token{ TokenType::t_integer_lit, 29, 1, 3 },
+    Token{ TokenType::t_right_brace, 30, 1, '}' },
+    Token{ TokenType::t_semicolon, 31, 1, ';' },
+    Token{ TokenType::t_eof, 32, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_array2);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
 
 }// namespace blang
 
