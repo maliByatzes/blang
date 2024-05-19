@@ -19,7 +19,7 @@ protected:
   Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
   Scanner sc_identifier_kw{ "array arrayrt3d function if else falsefalse print voider", reporter };
-  Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = ’q’;\ns: string = \"hello world\n\";", reporter };
+  Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = 'q';\ns: string = \"hello world\n\";", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -55,9 +55,9 @@ TEST_F(ScannerTest7, TestDeclarations) {
     Token{ TokenType::t_colon, 49, 4, ':' },
     Token{ TokenType::t_string, 56, 4, "string" },
     Token{ TokenType::t_equal, 58, 4, '=' },
-    Token{ TokenType::t_string_lit, 72, 4, "hello world\n" },
-    Token{ TokenType::t_semicolon, 74, 4, ';' },
-    Token{ TokenType::t_eof, 75, 4, '\0' },
+    Token{ TokenType::t_string_lit, 73, 5, "hello world" },
+    Token{ TokenType::t_semicolon, 74, 5, ';' },
+    Token{ TokenType::t_eof, 75, 5, '\0' },
   };
   // NOLINTEND
 

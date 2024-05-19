@@ -17,6 +17,7 @@ protected:
 
   Scanner sc_23{ "23", reporter };
   Scanner sc_7522{ "7522", reporter };
+  Scanner sc_decl{ "y: integer = 123;", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -29,7 +30,24 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest5, TestStringLitHelloToken)
+TEST_F(ScannerTest5, TestIntegerLitDecl) {
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "y" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_integer, 10, 1, "integer" },
+    Token{ TokenType::t_equal, 12, 1, '=' },
+    Token{ TokenType::t_integer_lit, 16, 1, 123 },
+    Token{ TokenType::t_semicolon, 17, 1, ';' },
+    Token{ TokenType::t_eof, 18, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_decl);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest5, TestIntegerLitToken1)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -42,7 +60,7 @@ TEST_F(ScannerTest5, TestStringLitHelloToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest5, TestStringLitHelloNumToken)
+TEST_F(ScannerTest5, TestIntegerLitToken2)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
