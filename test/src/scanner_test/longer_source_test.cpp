@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest : public testing::Test
+class ScannerTest7 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -19,6 +19,9 @@ protected:
   Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
   Scanner sc_identifier_kw{ "array arrayrt3d function if else falsefalse print voider", reporter };
+  Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = 'q';\ns: string = \"hello world\n\";", reporter };
+  Scanner sc_array1{"a: array [5] integer;", reporter};
+  Scanner sc_array2{"a: array [5] integer = {1,2,3};", reporter};
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -31,7 +34,40 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest, TestAllSingleTokens)
+TEST_F(ScannerTest7, TestDeclarations) {
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "x" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_integer, 10, 1, "integer" },
+    Token{ TokenType::t_semicolon, 11, 1, ';' },
+    Token{ TokenType::t_identifier, 13, 2, "b" },
+    Token{ TokenType::t_colon, 14, 2, ':' },
+    Token{ TokenType::t_boolean, 22, 2, "boolean" },
+    Token{ TokenType::t_equal, 24, 2, '=' },
+    Token{ TokenType::t_false, 30, 2, "false" },
+    Token{ TokenType::t_semicolon, 31, 2, ';' },
+    Token{ TokenType::t_identifier, 33, 3, "c" },
+    Token{ TokenType::t_colon, 34, 3, ':' },
+    Token{ TokenType::t_char, 39, 3, "char" },
+    Token{ TokenType::t_equal, 41, 3, '=' },
+    Token{ TokenType::t_char_lit, 44, 3, 'q' },
+    Token{ TokenType::t_semicolon, 46, 3, ';' },
+    Token{ TokenType::t_identifier, 48, 4, "s" },
+    Token{ TokenType::t_colon, 49, 4, ':' },
+    Token{ TokenType::t_string, 56, 4, "string" },
+    Token{ TokenType::t_equal, 58, 4, '=' },
+    Token{ TokenType::t_string_lit, 73, 5, "hello world" },
+    Token{ TokenType::t_semicolon, 74, 5, ';' },
+    Token{ TokenType::t_eof, 75, 5, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_declarations);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest7, TestAllSingleTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -62,7 +98,7 @@ TEST_F(ScannerTest, TestAllSingleTokens)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestAllDoubleTokens)
+TEST_F(ScannerTest7, TestAllDoubleTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -81,7 +117,7 @@ TEST_F(ScannerTest, TestAllDoubleTokens)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestMixtureTokens)
+TEST_F(ScannerTest7, TestMixtureTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -108,7 +144,7 @@ TEST_F(ScannerTest, TestMixtureTokens)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIdentifierKWTokens)
+TEST_F(ScannerTest7, TestIdentifierKWTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -125,6 +161,54 @@ TEST_F(ScannerTest, TestIdentifierKWTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_identifier_kw);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest7, TestArray1)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "a" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_array, 8, 1, "array" },
+    Token{ TokenType::t_left_square, 10, 1, '[' },
+    Token{ TokenType::t_integer_lit, 11, 1, 5 },
+    Token{ TokenType::t_right_square, 12, 1, ']' },
+    Token{ TokenType::t_integer, 20, 1, "integer" },
+    Token{ TokenType::t_semicolon, 21, 1, ';' },
+    Token{ TokenType::t_eof, 22, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_array1);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest7, TestArray2)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 1, 1, "a" },
+    Token{ TokenType::t_colon, 2, 1, ':' },
+    Token{ TokenType::t_array, 8, 1, "array" },
+    Token{ TokenType::t_left_square, 10, 1, '[' },
+    Token{ TokenType::t_integer_lit, 11, 1, 5 },
+    Token{ TokenType::t_right_square, 12, 1, ']' },
+    Token{ TokenType::t_integer, 20, 1, "integer" },
+    Token{ TokenType::t_equal, 22, 1, '=' },
+    Token{ TokenType::t_left_brace, 24, 1, '{' },
+    Token{ TokenType::t_integer_lit, 25, 1, 1 },
+    Token{ TokenType::t_comma, 26, 1, ',' },
+    Token{ TokenType::t_integer_lit, 27, 1, 2 },
+    Token{ TokenType::t_comma, 28, 1, ',' },
+    Token{ TokenType::t_integer_lit, 29, 1, 3 },
+    Token{ TokenType::t_right_brace, 30, 1, '}' },
+    Token{ TokenType::t_semicolon, 31, 1, ';' },
+    Token{ TokenType::t_eof, 32, 1, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_array2);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 

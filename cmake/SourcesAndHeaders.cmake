@@ -21,4 +21,7 @@ set(test_sources
   src/scanner_test/single_char_test.cpp
   src/scanner_test/string_literal_test.cpp
   src/scanner_test/keywords_test.cpp
+  src/scanner_test/char_lit_test.cpp
+  src/scanner_test/comments_test.cpp
+  src/scanner_test/integer_lit_test.cpp
 )

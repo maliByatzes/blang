@@ -10,15 +10,14 @@
 
 namespace blang {
 
-class ScannerTest9 : public testing::Test
+class ScannerTest1 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
 
   // Test string literal processing
-  Scanner sc_hello{ "\"hello\"", reporter };
-  Scanner sc_hello_2{ "\"h5725gf45llo\"", reporter };
-  Scanner sc_hello_nl{ "\"he\nllo\"", reporter };
+  Scanner sc_hello{ "'a'", reporter };
+  Scanner sc_hello_2{ "'g'", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -31,12 +30,12 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest9, TestStringLitHelloToken)
+TEST_F(ScannerTest1, TestCharLitToken1)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
-    Token{ TokenType::t_string_lit, 7, 1, "hello" },
-    Token{ TokenType::t_eof, 8, 1, '\0' },
+    Token{ TokenType::t_char_lit, 2, 1, 'a' },
+    Token{ TokenType::t_eof, 4, 1, '\0' },
   };
   // NOLINTEND
 
@@ -44,29 +43,16 @@ TEST_F(ScannerTest9, TestStringLitHelloToken)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest9, TestStringLitHelloNumToken)
+TEST_F(ScannerTest1, TestCharLitToken2)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
-    Token{ TokenType::t_string_lit, 14, 1, "h5725gf45llo" },
-    Token{ TokenType::t_eof, 15, 1, '\0' },
+    Token{ TokenType::t_char_lit, 2, 1, 'g' },
+    Token{ TokenType::t_eof, 4, 1, '\0' },
   };
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_hello_2);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
-}
-
-TEST_F(ScannerTest9, TestStringLitHelloNLToken)
-{
-  // NOLINTBEGIN
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_string_lit, 8, 2, "hello" },
-    Token{ TokenType::t_eof, 9, 2, '\0' },
-  };
-  // NOLINTEND
-
-  run_scanner_test(expected_tokens, sc_hello_nl);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 

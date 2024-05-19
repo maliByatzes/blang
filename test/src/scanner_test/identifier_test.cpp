@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest : public testing::Test
+class ScannerTest4 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -31,7 +31,7 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest, TestIdentifierToken1)
+TEST_F(ScannerTest4, TestIdentifierToken1)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_identifier, 1, 1, "i" },
@@ -41,7 +41,7 @@ TEST_F(ScannerTest, TestIdentifierToken1)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIdentifierToken2)
+TEST_F(ScannerTest4, TestIdentifierToken2)
 {
   const size_t idef_pos = 5;
   const size_t eof_pos = 6;
@@ -53,7 +53,7 @@ TEST_F(ScannerTest, TestIdentifierToken2)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIdentifierToken3)
+TEST_F(ScannerTest4, TestIdentifierToken3)
 {
   const size_t idef_pos = 6;
   const size_t eof_pos = 7;
@@ -65,7 +65,7 @@ TEST_F(ScannerTest, TestIdentifierToken3)
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest, TestIdentifierToken4)
+TEST_F(ScannerTest4, TestIdentifierToken4)
 {
   const size_t idef_pos = 13;
   const size_t eof_pos = 14;
