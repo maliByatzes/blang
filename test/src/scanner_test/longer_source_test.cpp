@@ -19,9 +19,12 @@ protected:
   Scanner sc_all_dbls{ "== -- != <= >= && ||", reporter };
   Scanner sc_mixture{ ": ; != = == < <= > > >= + ( { ) }", reporter };
   Scanner sc_identifier_kw{ "array arrayrt3d function if else falsefalse print voider", reporter };
-  Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = 'q';\ns: string = \"hello world\n\";", reporter };
-  Scanner sc_array1{"a: array [5] integer;", reporter};
-  Scanner sc_array2{"a: array [5] integer = {1,2,3};", reporter};
+  Scanner sc_declarations{ "x: integer;\nb: boolean = false;\nc: char = 'q';\ns: string = \"hello world\n\";",
+    reporter };
+  Scanner sc_array1{ "a: array [5] integer;", reporter };
+  Scanner sc_array2{ "a: array [5] integer = {1,2,3};", reporter };
+  Scanner sc_print{ "print \"The temperature is: \", temp, \" degrees\n\";", reporter };
+  Scanner sc_function{ "square: function integer ( x: integer ) = {\n return xˆ2;\n}", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -34,7 +37,39 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest7, TestDeclarations) {
+/*
+TEST_F(ScannerTest7, TestFunction)
+{
+  //NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 6, 1, "square" },
+    Token{ TokenType::t_colon, 7, 1, ':' },
+    Token{ TokenType::t_function, 16, 1, "function" },
+    Token{ TokenType::t_integer, 24, 1, "integer" },
+    Token{ TokenType::t_left_paren, 26, 1, '(' },
+    Token{ TokenType::t_identifier, 28, 1, "x" },
+    Token{ TokenType::t_colon, 29, 1, ':' },
+    Token{ TokenType::t_integer, 37, 1, "integer" },
+    Token{ TokenType::t_right_paren, 41, 1, ')' },
+    Token{ TokenType::t_equal, 43, 1, '=' },
+    Token{ TokenType::t_left_brace, 45, 1, '{' },
+    Token{ TokenType::t_return, 53, 2, "return" },
+    Token{ TokenType::t_identifier, 55, 2, "x" },
+    Token{ TokenType::t_exponent, 56, 2, '^' },
+    Token{ TokenType::t_integer_lit, 57, 2, 2 },
+    Token{ TokenType::t_semicolon, 58, 2, ';' },
+    Token{ TokenType::t_right_brace, 60, 3, '}' },
+    Token{ TokenType::t_eof, 61, 3, '\0' },
+  };
+  //NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_function);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+*/
+
+TEST_F(ScannerTest7, TestDeclarations)
+{
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_identifier, 1, 1, "x" },
@@ -209,6 +244,25 @@ TEST_F(ScannerTest7, TestArray2)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_array2);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
+TEST_F(ScannerTest7, TestPrint)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_print, 5, 1, "print" },
+    Token{ TokenType::t_string_lit, 28, 1, "The temperature is: " },
+    Token{ TokenType::t_comma, 29, 1, ',' },
+    Token{ TokenType::t_identifier, 34, 1, "temp" },
+    Token{ TokenType::t_comma, 35, 1, ',' },
+    Token{ TokenType::t_string_lit, 47, 2, " degrees" },
+    Token{ TokenType::t_semicolon, 48, 2, ';' },
+    Token{ TokenType::t_eof, 49, 2, '\0' },
+  };
+  // NOLINTEND
+
+  run_scanner_test(expected_tokens, sc_print);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
 }
 
