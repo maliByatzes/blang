@@ -25,6 +25,11 @@ protected:
   Scanner sc_array2{ "a: array [5] integer = {1,2,3};", reporter };
   Scanner sc_print{ "print \"The temperature is: \", temp, \" degrees\n\";", reporter };
   Scanner sc_function{ "square: function integer ( x: integer ) = {\n return x^2;\n}", reporter };
+  Scanner sc_longer_func{
+    "printarray: function void\n ( a: array [] integer, size: integer ) = {\n i: integer;\n for( i=0;i<size;i++) {\n "
+    "print a[i], \"\n\";\n }\n }",
+    reporter
+  };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -37,9 +42,66 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
+TEST_F(ScannerTest7, TestLongerFunction)
+{
+  // NOLINTBEGIN
+  std::vector<Token> expected_tokens{
+    Token{ TokenType::t_identifier, 10, 1, "printarray" },
+    Token{ TokenType::t_colon, 11, 1, ':' },
+    Token{ TokenType::t_function, 20, 1, "function" },
+    Token{ TokenType::t_void, 25, 1, "void" },
+    Token{ TokenType::t_left_paren, 28, 2, '(' },
+    Token{ TokenType::t_identifier, 30, 2, "a" },
+    Token{ TokenType::t_colon, 31, 2, ':' },
+    Token{ TokenType::t_array, 37, 2, "array" },
+    Token{ TokenType::t_left_square, 39, 2, '[' },
+    Token{ TokenType::t_right_square, 40, 2, ']' },
+    Token{ TokenType::t_integer, 48, 2, "integer" },
+    Token{ TokenType::t_comma, 49, 2, ',' },
+    Token{ TokenType::t_identifier, 54, 2, "size" },
+    Token{ TokenType::t_colon, 55, 2, ':' },
+    Token{ TokenType::t_integer, 63, 2, "integer" },
+    Token{ TokenType::t_right_paren, 65, 2, ')' },
+    Token{ TokenType::t_equal, 67, 2, '=' },
+    Token{ TokenType::t_left_brace, 69, 2, '{' },
+    Token{ TokenType::t_identifier, 72, 3, "i" },
+    Token{ TokenType::t_colon, 73, 3, ':' },
+    Token{ TokenType::t_integer, 81, 3, "integer" },
+    Token{ TokenType::t_semicolon, 82, 3, ';' },
+    Token{ TokenType::t_for, 87, 4, "for" },
+    Token{ TokenType::t_left_paren, 88, 4, '(' },
+    Token{ TokenType::t_identifier, 90, 4, "i" },
+    Token{ TokenType::t_equal, 91, 4, '=' },
+    Token{ TokenType::t_integer_lit, 92, 4, 0 },
+    Token{ TokenType::t_semicolon, 93, 4, ';' },
+    Token{ TokenType::t_identifier, 94, 4, "i" },
+    Token{ TokenType::t_less_than, 95, 4, '<' },
+    Token{ TokenType::t_identifier, 99, 4, "size" },
+    Token{ TokenType::t_semicolon, 100, 4, ';' },
+    Token{ TokenType::t_identifier, 101, 4, "i" },
+    Token{ TokenType::t_plus_plus, 103, 4, "++" },
+    Token{ TokenType::t_right_paren, 104, 4, ')' },
+    Token{ TokenType::t_left_brace, 106, 4, '{' },
+    Token{ TokenType::t_print, 113, 5, "print" },
+    Token{ TokenType::t_identifier, 115, 5, "a" },
+    Token{ TokenType::t_left_square, 116, 5, '[' },
+    Token{ TokenType::t_identifier, 117, 5, "i" },
+    Token{ TokenType::t_right_square, 118, 5, ']' },
+    Token{ TokenType::t_comma, 119, 5, ',' },
+    Token{ TokenType::t_string_lit, 123, 6, "" },
+    Token{ TokenType::t_semicolon, 124, 6, ';' },
+    Token{ TokenType::t_right_brace, 127, 7, '}' },
+    Token{ TokenType::t_right_brace, 130, 8, '}' },
+    Token{ TokenType::t_eof, 131, 8, '\0' },
+  };
+  // NOLINTEND
+  run_scanner_test(expected_tokens, sc_longer_func);
+  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+}
+
 TEST_F(ScannerTest7, TestFunction)
 {
-  //NOLINTBEGIN
+  // NOLINTBEGIN
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_identifier, 6, 1, "square" },
     Token{ TokenType::t_colon, 7, 1, ':' },
@@ -60,7 +122,7 @@ TEST_F(ScannerTest7, TestFunction)
     Token{ TokenType::t_right_brace, 58, 3, '}' },
     Token{ TokenType::t_eof, 59, 3, '\0' },
   };
-  //NOLINTEND
+  // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_function);
   ASSERT_EQ(reporter.get_status(), error::Status::OK);
