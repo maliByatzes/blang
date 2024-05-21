@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest7 : public testing::Test
+class ScannerTest8 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -42,7 +42,7 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest7, TestLongerFunction)
+TEST_F(ScannerTest8, TestLongerFunction)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -96,10 +96,10 @@ TEST_F(ScannerTest7, TestLongerFunction)
   };
   // NOLINTEND
   run_scanner_test(expected_tokens, sc_longer_func);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_longer_func.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestFunction)
+TEST_F(ScannerTest8, TestFunction)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -125,10 +125,10 @@ TEST_F(ScannerTest7, TestFunction)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_function);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_function.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestDeclarations)
+TEST_F(ScannerTest8, TestDeclarations)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -159,10 +159,10 @@ TEST_F(ScannerTest7, TestDeclarations)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_declarations);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_declarations.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestAllSingleTokens)
+TEST_F(ScannerTest8, TestAllSingleTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -190,10 +190,10 @@ TEST_F(ScannerTest7, TestAllSingleTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_all_single);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_all_single.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestAllDoubleTokens)
+TEST_F(ScannerTest8, TestAllDoubleTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -209,10 +209,10 @@ TEST_F(ScannerTest7, TestAllDoubleTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_all_dbls);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_all_dbls.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestMixtureTokens)
+TEST_F(ScannerTest8, TestMixtureTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -236,10 +236,10 @@ TEST_F(ScannerTest7, TestMixtureTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_mixture);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_mixture.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestIdentifierKWTokens)
+TEST_F(ScannerTest8, TestIdentifierKWTokens)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -256,10 +256,10 @@ TEST_F(ScannerTest7, TestIdentifierKWTokens)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_identifier_kw);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_identifier_kw.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestArray1)
+TEST_F(ScannerTest8, TestArray1)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -276,10 +276,10 @@ TEST_F(ScannerTest7, TestArray1)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_array1);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_array1.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestArray2)
+TEST_F(ScannerTest8, TestArray2)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -304,10 +304,10 @@ TEST_F(ScannerTest7, TestArray2)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_array2);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_array2.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest7, TestPrint)
+TEST_F(ScannerTest8, TestPrint)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -323,7 +323,7 @@ TEST_F(ScannerTest7, TestPrint)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_print);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_print.get_status(), error::Status::OK);
 }
 
 }// namespace blang

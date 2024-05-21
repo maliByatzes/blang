@@ -10,14 +10,13 @@
 
 namespace blang {
 
-class ScannerTest1 : public testing::Test
+class ScannerTest4 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
 
   // Test string literal processing
-  Scanner sc_hello{ "'a'", reporter };
-  Scanner sc_hello_2{ "'g'", reporter };
+  Scanner sc_err{ "x: integer?\ny$ char&", reporter };
 };
 
 void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanner)
@@ -30,30 +29,21 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest1, TestCharLitToken1)
+TEST_F(ScannerTest4, TestErr)
 {
   // NOLINTBEGIN
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_char_lit, 2, 1, 'a' },
-    Token{ TokenType::t_eof, 4, 1, '\0' },
+  std::vector<Token> expected_tokens {
+    Token{TokenType::t_identifier, 1, 1, "x"},
+    Token{TokenType::t_colon, 2, 1, ':'},
+    Token{TokenType::t_integer, 10, 1, "integer"},
+    Token{TokenType::t_identifier, 13, 2, "y"},
+    Token{TokenType::t_char, 19, 2, "char"},
+    Token{TokenType::t_eof, 21, 2, '\0'},
   };
-  // NOLINTEND
+  //NOLINTEND
+  run_scanner_test(expected_tokens, sc_err);
 
-  run_scanner_test(expected_tokens, sc_hello);
-  ASSERT_EQ(sc_hello.get_status(), error::Status::OK);
-}
-
-TEST_F(ScannerTest1, TestCharLitToken2)
-{
-  // NOLINTBEGIN
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_char_lit, 2, 1, 'g' },
-    Token{ TokenType::t_eof, 4, 1, '\0' },
-  };
-  // NOLINTEND
-
-  run_scanner_test(expected_tokens, sc_hello_2);
-  ASSERT_EQ(sc_hello_2.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_err.get_status() ,error::Status::ERROR);
 }
 
 }// namespace blang

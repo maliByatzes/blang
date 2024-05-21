@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest4 : public testing::Test
+class ScannerTest5 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -31,17 +31,17 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest4, TestIdentifierToken1)
+TEST_F(ScannerTest5, TestIdentifierToken1)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_identifier, 1, 1, "i" },
     Token{ TokenType::t_eof, 2, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_i);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_i.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest4, TestIdentifierToken2)
+TEST_F(ScannerTest5, TestIdentifierToken2)
 {
   const size_t idef_pos = 5;
   const size_t eof_pos = 6;
@@ -50,10 +50,10 @@ TEST_F(ScannerTest4, TestIdentifierToken2)
     Token{ TokenType::t_eof, eof_pos, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_mystr);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_mystr.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest4, TestIdentifierToken3)
+TEST_F(ScannerTest5, TestIdentifierToken3)
 {
   const size_t idef_pos = 6;
   const size_t eof_pos = 7;
@@ -62,10 +62,10 @@ TEST_F(ScannerTest4, TestIdentifierToken3)
     Token{ TokenType::t_eof, eof_pos, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_fog123);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_fog123.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest4, TestIdentifierToken4)
+TEST_F(ScannerTest5, TestIdentifierToken4)
 {
   const size_t idef_pos = 13;
   const size_t eof_pos = 14;
@@ -74,7 +74,7 @@ TEST_F(ScannerTest4, TestIdentifierToken4)
     Token{ TokenType::t_eof, eof_pos, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_BigLongName55);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_BigLongName55.get_status(), error::Status::OK);
 }
 
 }// namespace blang

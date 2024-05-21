@@ -18,7 +18,7 @@ void ErrorReporter::print_errors() const
   std::for_each(m_error_messages.begin(), m_error_messages.end(), print);
 }
 
-void ErrorReporter::set_error(std::size_t line, const std::string &message)
+void ErrorReporter::set_error(int line, const std::string &message)
 {
   m_error_messages.emplace_back("[Line " + std::to_string(line) + "] Error: " + message);
   m_status = Status::ERROR;

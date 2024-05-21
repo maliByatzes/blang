@@ -37,6 +37,7 @@ public:
   {}
 
   std::vector<Token> scan_tokens();
+  error::Status get_status() const;
 
 private:
   void add_token(TokenType type, const value_object &value);
