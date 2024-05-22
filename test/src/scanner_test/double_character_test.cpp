@@ -43,7 +43,7 @@ TEST_F(ScannerTest3, TestEqualEqualToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_eq_eq);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_eq_eq.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestMinusMinusToken)
@@ -53,7 +53,7 @@ TEST_F(ScannerTest3, TestMinusMinusToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_minus_minus);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_minus_minus.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestBangEqualToken)
@@ -63,7 +63,7 @@ TEST_F(ScannerTest3, TestBangEqualToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_bang_not);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_bang_not.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestLessEqualToken)
@@ -73,7 +73,7 @@ TEST_F(ScannerTest3, TestLessEqualToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_less_eq);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_less_eq.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestGreaterEqualToken)
@@ -83,7 +83,7 @@ TEST_F(ScannerTest3, TestGreaterEqualToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_greater_eq);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_greater_eq.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestAndAndToken)
@@ -93,7 +93,7 @@ TEST_F(ScannerTest3, TestAndAndToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_and_and);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_and_and.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestOrOrToken)
@@ -103,7 +103,7 @@ TEST_F(ScannerTest3, TestOrOrToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_or_or);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_or_or.get_status(), error::Status::OK);
 }
 
 TEST_F(ScannerTest3, TestPlusPlusToken)
@@ -113,7 +113,7 @@ TEST_F(ScannerTest3, TestPlusPlusToken)
     Token{ TokenType::t_eof, 3, 1, '\0' },
   };
   run_scanner_test(expected_tokens, sc_plus_plus);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_plus_plus.get_status(), error::Status::OK);
 }
 
 }// namespace blang

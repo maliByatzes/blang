@@ -24,4 +24,5 @@ set(test_sources
   src/scanner_test/char_lit_test.cpp
   src/scanner_test/comments_test.cpp
   src/scanner_test/integer_lit_test.cpp
+  src/scanner_test/error_reporter_test.cpp
 )

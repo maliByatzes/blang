@@ -10,7 +10,7 @@
 
 namespace blang {
 
-class ScannerTest9 : public testing::Test
+class ScannerTest10 : public testing::Test
 {
 protected:
   error::ErrorReporter reporter;
@@ -31,7 +31,7 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-TEST_F(ScannerTest9, TestStringLitHelloToken)
+TEST_F(ScannerTest10, TestStringLitHelloToken)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -41,10 +41,10 @@ TEST_F(ScannerTest9, TestStringLitHelloToken)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_hello);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_hello.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest9, TestStringLitHelloNumToken)
+TEST_F(ScannerTest10, TestStringLitHelloNumToken)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -54,10 +54,10 @@ TEST_F(ScannerTest9, TestStringLitHelloNumToken)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_hello_2);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_hello_2.get_status(), error::Status::OK);
 }
 
-TEST_F(ScannerTest9, TestStringLitHelloNLToken)
+TEST_F(ScannerTest10, TestStringLitHelloNLToken)
 {
   // NOLINTBEGIN
   std::vector<Token> expected_tokens{
@@ -67,7 +67,7 @@ TEST_F(ScannerTest9, TestStringLitHelloNLToken)
   // NOLINTEND
 
   run_scanner_test(expected_tokens, sc_hello_nl);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_hello_nl.get_status(), error::Status::OK);
 }
 
 }// namespace blang

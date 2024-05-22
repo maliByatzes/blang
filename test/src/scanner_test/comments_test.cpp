@@ -31,44 +31,14 @@ void run_scanner_test(const std::vector<Token> &expected_tokens, Scanner &scanne
   ASSERT_TRUE(std::equal(actual_tokens.begin(), actual_tokens.end(), expected_tokens.begin(), compare));
 }
 
-/*
-TEST_F(ScannerTest2, TestComment1)
-{
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_eof, 23, 1, '\0' }// NOLINT
-  };
-
-  std::cout << "Stop";
-  run_scanner_test(expected_tokens, sc_comment_1);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
-}
-*/
-
 TEST_F(ScannerTest2, TestComment2)
 {
   std::vector<Token> expected_tokens{
     Token{ TokenType::t_eof, 18, 2, '\0' }// NOLINT
   };
   run_scanner_test(expected_tokens, sc_comment_2);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
+  ASSERT_EQ(sc_comment_2.get_status(), error::Status::OK);
 }
-/*
-TEST_F(ScannerTest2, TestComments)
-{
-  // NOLINTBEGIN
-  std::vector<Token> expected_tokens{
-    Token{ TokenType::t_identifier, 25, 2, "a" },
-    Token{ TokenType::t_equal, 26, 2, '=' },
-    Token{ TokenType::t_integer_lit, 27, 2, 5 },
-    Token{ TokenType::t_semicolon, 28, 2, ';' },
-    Token{ TokenType::t_eof, 29, 2, '\0' },
-  };
-  // NOLINTEND
-
-  run_scanner_test(expected_tokens, sc_comments);
-  ASSERT_EQ(reporter.get_status(), error::Status::OK);
-}
-*/
 
 }// namespace blang
 

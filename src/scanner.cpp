@@ -103,7 +103,7 @@ std::vector<Token> Scanner::scan_tokens()
         process_integer_lit(current_char);
       } else {
         std::string message{ "Unexpected character: " + std::to_string(current_char) };
-        m_reporter.set_error(m_position, message);
+        m_reporter.set_error(m_line, message);
       }
     }
   }
@@ -197,7 +197,7 @@ void Scanner::process_char_lit()
       consume();
     } else {
       std::string message{ "Unterminated character, missing \"'\"" };
-      m_reporter.set_error(m_position, message);
+      m_reporter.set_error(m_line, message);
     }
   }
 }
@@ -236,7 +236,7 @@ void Scanner::process_comments()
     }
   } else if (peek_next().has_value() && peek_next().value() == '/') {
     consume();
-    while (peek_next().has_value() && peek_next().value() != '\n') {//NOLINT
+    while (peek_next().has_value() && peek_next().value() != '\n') {// NOLINT
       consume();
     }
     consume();
@@ -246,4 +246,5 @@ void Scanner::process_comments()
   }
 }
 
+error::Status Scanner::get_status() const { return m_reporter.get_status(); }
 }// namespace blang
