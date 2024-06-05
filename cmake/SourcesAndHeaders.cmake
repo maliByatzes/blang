@@ -10,6 +10,7 @@ set(exe_sources
 
 set(headers
     include/blang/scanner.hpp
+    include/blang/ast.hpp
     include/blang/token_type.hpp
     include/blang/error/error_reporter.hpp
 )
