@@ -1,5 +1,6 @@
 set(sources
     src/scanner.cpp
+    src/parser.cpp
     src/error/error_reporter.cpp
 )
 
@@ -10,6 +11,7 @@ set(exe_sources
 
 set(headers
     include/blang/scanner.hpp
+    include/blang/parser.hpp
     include/blang/ast.hpp
     include/blang/token_type.hpp
     include/blang/error/error_reporter.hpp
